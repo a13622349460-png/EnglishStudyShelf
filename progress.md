@@ -34,3 +34,6 @@
 - Confirmed GitHub connector login: `a13622349460-png`.
 - Searched installed GitHub repositories for `EnglishStudyShelf`; none were found.
 - Tightened `.gitignore` to exclude TypeScript build info and runtime logs before preparing upload.
+- Initialized the local Git repository and created the initial commit `0a19de0`.
+- Added remote `https://github.com/a13622349460-png/EnglishStudyShelf.git`.
+- Pushed local `main` to GitHub and verified `README.md` plus `start-english-study-shelf.cmd` through the GitHub connector.
