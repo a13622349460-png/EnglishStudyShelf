@@ -72,6 +72,15 @@ Tasks:
 - Confirm no bundled PDFs, no `.env`, and no whole-book AI endpoint.
 - Update progress and findings.
 
+### Phase 6 - Publishing And Copy Polish
+Status: complete
+
+Tasks:
+- Add a Windows one-click launcher for local startup.
+- Initialize local Git history and publish the repository to GitHub.
+- Change project documentation and visible UI text to Chinese-English mixed copy.
+- Verify checks and builds after publishing and copy updates.
+
 ## Decisions
 - Use a local backend instead of browser-only OpenAI calls so the API key stays out of frontend code.
 - Store user uploads and learning data in ignored local runtime files so public source code remains clean.
@@ -80,6 +89,8 @@ Tasks:
 - Use `npm.cmd` in Windows instructions because direct `npm` can be blocked by PowerShell execution policy.
 - Vite may choose `http://127.0.0.1:5174/` when `5173` is already occupied.
 - Add a Windows `.cmd` launcher for one-click local startup.
+- Keep public-facing copy Chinese-English mixed so the English learning tool stays friendly to Chinese readers.
+- GitHub remote is `https://github.com/a13622349460-png/EnglishStudyShelf.git`.
 
 ## Errors Encountered
 | Error | Attempt | Resolution |
@@ -90,3 +101,4 @@ Tasks:
 | Direct Vite start failed with `EPERM` creating `apps/web/node_modules/.vite-temp` | Ran Vite entry from `apps/web` | Set Vite `cacheDir` to root `node_modules/.vite/apps-web` for workspace layout |
 | `git status` failed with `not a git repository` | Tried local Git status | Treating workspace as code folder; used file audit instead |
 | Background server launch wrappers exited in this sandbox | Tried multiple hidden process wrappers | Verified foreground `npm.cmd run dev` startup; user can run the command to keep it alive |
+| `.git` metadata was read-only in the sandbox | Tried `git init`, `git config`, and `git commit` normally | Used approved escalations only for Git metadata writes and network push |

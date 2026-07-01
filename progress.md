@@ -43,3 +43,10 @@
 - Updated visible web UI labels, status text, buttons, empty states, and explanation mode labels to Chinese-English mixed copy.
 - Updated the Windows launcher messages and root package description to Chinese-English mixed copy.
 - Verified `npm.cmd run check` and `npm.cmd run build` after the bilingual copy pass.
+
+### Work Log Saved
+- Saved a wrap-up planning record after the user asked to preserve the work log.
+- Current project status: local-first v1 scaffold complete, one-click launcher added, GitHub repository published, and Chinese-English mixed copy applied.
+- Latest pushed functional commit before this planning save: `bcb90cf`.
+- Key verification commands completed during the session: `npm.cmd run check`, `npm.cmd run build`, and short foreground `npm.cmd run dev` startup verification.
+- Remaining likely next steps: real PDF reading QA with user-uploaded files, OpenAI API key setup, and future UX refinements around explanation caching and vocabulary review.
