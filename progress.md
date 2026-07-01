@@ -37,3 +37,9 @@
 - Initialized the local Git repository and created the initial commit `0a19de0`.
 - Added remote `https://github.com/a13622349460-png/EnglishStudyShelf.git`.
 - Pushed local `main` to GitHub and verified `README.md` plus `start-english-study-shelf.cmd` through the GitHub connector.
+
+### Bilingual Copy Pass
+- Updated README from English-only to Chinese-English mixed documentation.
+- Updated visible web UI labels, status text, buttons, empty states, and explanation mode labels to Chinese-English mixed copy.
+- Updated the Windows launcher messages and root package description to Chinese-English mixed copy.
+- Verified `npm.cmd run check` and `npm.cmd run build` after the bilingual copy pass.

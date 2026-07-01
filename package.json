@@ -2,7 +2,7 @@
   "name": "english-study-shelf",
   "version": "0.1.0",
   "private": true,
-  "description": "A local English PDF study shelf with selected-text AI explanations.",
+  "description": "本地英语 PDF 学习书架 / Local English PDF study shelf with selected-text AI explanations.",
   "workspaces": [
     "apps/*",
     "packages/*"

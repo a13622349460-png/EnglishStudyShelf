@@ -33,7 +33,7 @@ export function PdfReader({ bookId, onSelection, onProgressSaved }: PdfReaderPro
     setPdf(null);
     setPageNumber(1);
     setPageCount(0);
-    setStatus("Loading PDF");
+    setStatus("加载 PDF / Loading PDF");
 
     pdfjsLib
       .getDocument(pdfUrl(bookId))
@@ -47,7 +47,7 @@ export function PdfReader({ bookId, onSelection, onProgressSaved }: PdfReaderPro
         setStatus("");
       })
       .catch((error: unknown) => {
-        setStatus(error instanceof Error ? error.message : "Failed to load PDF");
+        setStatus(error instanceof Error ? error.message : "PDF 加载失败 / Failed to load PDF");
       });
 
     return () => {
@@ -68,7 +68,7 @@ export function PdfReader({ bookId, onSelection, onProgressSaved }: PdfReaderPro
       return;
     }
 
-    setStatus("Rendering page");
+    setStatus("渲染页面 / Rendering page");
     textLayer.replaceChildren();
 
     pdf.getPage(pageNumber).then(async (page) => {
@@ -131,7 +131,7 @@ export function PdfReader({ bookId, onSelection, onProgressSaved }: PdfReaderPro
       <div className="reader-toolbar">
         <button type="button" className="icon-button" onClick={() => setPageNumber((page) => Math.max(1, page - 1))}>
           <ChevronLeft size={18} />
-          <span className="sr-only">Previous page</span>
+          <span className="sr-only">上一页 Previous page</span>
         </button>
         <div className="page-meter">
           {pageNumber} / {pageCount || "-"}
@@ -142,16 +142,16 @@ export function PdfReader({ bookId, onSelection, onProgressSaved }: PdfReaderPro
           onClick={() => setPageNumber((page) => Math.min(pageCount || page, page + 1))}
         >
           <ChevronRight size={18} />
-          <span className="sr-only">Next page</span>
+          <span className="sr-only">下一页 Next page</span>
         </button>
         <div className="toolbar-divider" />
         <button type="button" className="icon-button" onClick={() => setScale((value) => Math.max(0.7, value - 0.1))}>
           <ZoomOut size={18} />
-          <span className="sr-only">Zoom out</span>
+          <span className="sr-only">缩小 Zoom out</span>
         </button>
         <button type="button" className="icon-button" onClick={() => setScale((value) => Math.min(2.2, value + 0.1))}>
           <ZoomIn size={18} />
-          <span className="sr-only">Zoom in</span>
+          <span className="sr-only">放大 Zoom in</span>
         </button>
       </div>
 

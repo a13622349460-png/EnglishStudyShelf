@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BookOpen,
-  CheckCircle2,
   Database,
   FilePlus2,
   Library,
@@ -34,6 +33,12 @@ const emptySummary: ProgressSummary = {
   averagePercent: 0
 };
 
+const modeLabels: Record<ExplainMode, string> = {
+  word: "单词 Word",
+  sentence: "句子 Sentence",
+  grammar: "语法 Grammar"
+};
+
 export function App() {
   const [view, setView] = useState<View>("shelf");
   const [books, setBooks] = useState<Book[]>([]);
@@ -59,7 +64,9 @@ export function App() {
 
   useEffect(() => {
     refresh()
-      .catch((nextError: unknown) => setError(nextError instanceof Error ? nextError.message : "Failed to load app data"))
+      .catch((nextError: unknown) =>
+        setError(nextError instanceof Error ? nextError.message : "加载数据失败 / Failed to load app data")
+      )
       .finally(() => setLoading(false));
   }, [refresh]);
 
@@ -76,10 +83,10 @@ export function App() {
           <Library size={22} />
           <span>EnglishStudyShelf</span>
         </button>
-        <nav className="nav-tabs" aria-label="Primary">
+        <nav className="nav-tabs" aria-label="主导航 Primary navigation">
           <button type="button" className={view === "shelf" ? "active" : ""} onClick={() => setView("shelf")}>
             <BookOpen size={17} />
-            <span>Books</span>
+            <span>书架 Books</span>
           </button>
           <button
             type="button"
@@ -87,7 +94,7 @@ export function App() {
             onClick={() => setView("vocabulary")}
           >
             <NotebookTabs size={17} />
-            <span>Words</span>
+            <span>生词 Words</span>
           </button>
         </nav>
       </header>
@@ -98,7 +105,7 @@ export function App() {
         {loading ? (
           <div className="loading-state page-loading">
             <Loader2 size={22} className="spin" />
-            <span>Loading</span>
+            <span>加载中 Loading</span>
           </div>
         ) : null}
 
@@ -142,8 +149,8 @@ function ShelfView({
       <section className="panel shelf-panel">
         <div className="section-head">
           <div>
-            <h1>Books</h1>
-            <p>{books.length} local PDFs</p>
+            <h1>书架 Books</h1>
+            <p>{books.length} 本本地 PDF / local PDFs</p>
           </div>
           <UploadBox onUploadDone={onUploadDone} />
         </div>
@@ -164,7 +171,7 @@ function ShelfView({
           {!books.length ? (
             <div className="empty-state">
               <FilePlus2 size={24} />
-              <span>No PDFs yet</span>
+              <span>还没有 PDF / No PDFs yet</span>
             </div>
           ) : null}
         </div>
@@ -173,15 +180,15 @@ function ShelfView({
       <aside className="panel progress-panel">
         <div className="section-head compact">
           <div>
-            <h2>Progress</h2>
-            <p>{summary.averagePercent}% average</p>
+            <h2>学习进度 Progress</h2>
+            <p>{summary.averagePercent}% 平均进度 / average</p>
           </div>
           <Database size={20} />
         </div>
         <div className="metric-row">
-          <Metric label="Books" value={summary.totalBooks} />
-          <Metric label="Started" value={summary.startedBooks} />
-          <Metric label="Done" value={summary.completedBooks} />
+          <Metric label="书籍 Books" value={summary.totalBooks} />
+          <Metric label="已开始 Started" value={summary.startedBooks} />
+          <Metric label="完成 Done" value={summary.completedBooks} />
         </div>
         <ProgressBar percent={summary.averagePercent} large />
       </aside>
@@ -197,7 +204,7 @@ function UploadBox({ onUploadDone }: { onUploadDone: () => Promise<void> }) {
 
   async function handleUpload() {
     if (!file) {
-      setMessage("Choose a PDF");
+      setMessage("请选择 PDF / Choose a PDF");
       return;
     }
     setBusy(true);
@@ -207,9 +214,9 @@ function UploadBox({ onUploadDone }: { onUploadDone: () => Promise<void> }) {
       setFile(null);
       setTitle("");
       await onUploadDone();
-      setMessage("Uploaded");
+      setMessage("已上传 / Uploaded");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Upload failed");
+      setMessage(error instanceof Error ? error.message : "上传失败 / Upload failed");
     } finally {
       setBusy(false);
     }
@@ -219,17 +226,17 @@ function UploadBox({ onUploadDone }: { onUploadDone: () => Promise<void> }) {
     <div className="upload-box">
       <label className="file-picker">
         <FilePlus2 size={17} />
-        <span>{file ? file.name : "PDF"}</span>
+        <span>{file ? file.name : "PDF 文件"}</span>
         <input
           type="file"
           accept="application/pdf,.pdf"
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
         />
       </label>
-      <input value={title} placeholder="Title" onChange={(event) => setTitle(event.target.value)} />
+      <input value={title} placeholder="书名 Title" onChange={(event) => setTitle(event.target.value)} />
       <button type="button" className="primary-button" onClick={handleUpload} disabled={busy}>
         {busy ? <Loader2 size={16} className="spin" /> : <FilePlus2 size={16} />}
-        <span>Upload</span>
+        <span>上传 Upload</span>
       </button>
       {message ? <span className="inline-message">{message}</span> : null}
     </div>
@@ -255,7 +262,7 @@ function ReaderView({
     <div className="reader-layout">
       <div className="reader-titlebar">
         <button type="button" className="ghost-button" onClick={onBack}>
-          Books
+          返回书架 Books
         </button>
         <div>
           <h1>{book.title}</h1>
@@ -295,7 +302,7 @@ function ExplainPanel({
 
   async function handleExplain() {
     if (!selection.text) {
-      setMessage("Select text");
+      setMessage("先选中文本 / Select text");
       return;
     }
     setBusy(true);
@@ -310,7 +317,7 @@ function ExplainPanel({
       setExplanation(result.explanation);
       setCached(result.cached);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Explanation failed");
+      setMessage(error instanceof Error ? error.message : "解释失败 / Explanation failed");
     } finally {
       setBusy(false);
     }
@@ -332,30 +339,30 @@ function ExplainPanel({
     <aside className="panel explain-panel">
       <div className="section-head compact">
         <div>
-          <h2>Explain</h2>
-          <p>{selection.pageNumber ? `Page ${selection.pageNumber}` : "No selection"}</p>
+          <h2>AI 解释 Explain</h2>
+          <p>{selection.pageNumber ? `第 ${selection.pageNumber} 页 / Page ${selection.pageNumber}` : "未选中文本 / No selection"}</p>
         </div>
         <Sparkles size={20} />
       </div>
 
-      <div className="selection-box">{selection.text || "No selection"}</div>
+      <div className="selection-box">{selection.text || "请选择文本 / No selection"}</div>
 
       <div className="segmented-control">
         {(["word", "sentence", "grammar"] as ExplainMode[]).map((item) => (
           <button key={item} type="button" className={mode === item ? "active" : ""} onClick={() => setMode(item)}>
-            {item}
+            {modeLabels[item]}
           </button>
         ))}
       </div>
 
       <button type="button" className="primary-button wide" onClick={handleExplain} disabled={busy || !selection.text}>
         {busy ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} />}
-        <span>Explain</span>
+        <span>解释 Explain</span>
       </button>
 
       {cached !== null ? (
         <div className={cached ? "cache-pill cached" : "cache-pill"}>
-          {cached ? "Local cache" : "New result"}
+          {cached ? "本地缓存 Local cache" : "新结果 New result"}
         </div>
       ) : null}
 
@@ -364,7 +371,7 @@ function ExplainPanel({
 
       <button type="button" className="secondary-button wide" onClick={handleSaveWord} disabled={!selection.text}>
         <NotebookTabs size={16} />
-        <span>Save</span>
+        <span>保存 Save</span>
       </button>
     </aside>
   );
@@ -377,8 +384,8 @@ function VocabularyView({ entries, books }: { entries: VocabularyEntry[]; books:
     <section className="panel vocabulary-panel">
       <div className="section-head">
         <div>
-          <h1>Words</h1>
-          <p>{entries.length} saved entries</p>
+          <h1>生词本 Words</h1>
+          <p>{entries.length} 条生词 / saved entries</p>
         </div>
         <NotebookTabs size={22} />
       </div>
@@ -388,7 +395,7 @@ function VocabularyView({ entries, books }: { entries: VocabularyEntry[]; books:
           <article key={entry.id} className="vocab-item">
             <div>
               <h2>{entry.text}</h2>
-              <p>{entry.bookId ? titleById.get(entry.bookId) ?? "Local book" : "General"}</p>
+              <p>{entry.bookId ? titleById.get(entry.bookId) ?? "本地书籍 / Local book" : "通用 / General"}</p>
             </div>
             {entry.explanation ? <pre>{entry.explanation}</pre> : null}
           </article>
@@ -396,7 +403,7 @@ function VocabularyView({ entries, books }: { entries: VocabularyEntry[]; books:
         {!entries.length ? (
           <div className="empty-state">
             <NotebookTabs size={24} />
-            <span>No saved words</span>
+            <span>暂无生词 / No saved words</span>
           </div>
         ) : null}
       </div>
