@@ -1,0 +1,19 @@
+{
+  "name": "english-study-shelf",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local English PDF study shelf with selected-text AI explanations.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,green \"npm:dev -w @english-study-shelf/api\" \"npm:dev -w @english-study-shelf/web\"",
+    "build": "npm run build --workspaces",
+    "check": "npm run check --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.7.3"
+  }
+}
