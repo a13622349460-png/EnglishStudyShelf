@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "concurrently -n api,web -c cyan,green \"npm:dev -w @english-study-shelf/api\" \"npm:dev -w @english-study-shelf/web\"",
     "build": "npm run build --workspaces",
-    "check": "npm run check --workspaces"
+    "check": "npm run guard:private && npm run check --workspaces",
+    "guard:private": "node scripts/check-private-files.cjs"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
